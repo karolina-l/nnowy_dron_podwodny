@@ -10,10 +10,10 @@ example.out: Dr3D_gnuplot_api.o main.o prostopadloscian.o p_prost.o dron.o sruba
 main.o: main.cpp Dr3D_gnuplot_api.hh  templates.cpp m_obrotu.hh dron.hh
 	g++ ${CPPFLAGS} -o main.o main.cpp
 
-tafla.o: powierzchnia.hh tafla.cpp tafla.hh rysowanie_int.hh vector.hh
+tafla.o: powierzchnia.hh przeszkoda.hh tafla.cpp tafla.hh rysowanie_int.hh vector.hh
 	g++ ${CPPFLAGS} -o tafla.o tafla.cpp
 
-dno.o: powierzchnia.hh dno.cpp dno.hh rysowanie_int.hh vector.hh
+dno.o: powierzchnia.hh przeszkoda.hh dno.cpp dno.hh rysowanie_int.hh vector.hh
 	g++ ${CPPFLAGS} -o dno.o dno.cpp
 
 sruba.o: graniastoslup.hh sruba.cpp sruba.hh rysowanie_int.hh vector.hh m_obrotu.hh
@@ -22,7 +22,7 @@ sruba.o: graniastoslup.hh sruba.cpp sruba.hh rysowanie_int.hh vector.hh m_obrotu
 graniastoslup.o: bryla.hh graniastoslup.cpp graniastoslup.hh rysowanie_int.hh vector.hh m_obrotu.hh
 	g++ ${CPPFLAGS} -o graniastoslup.o graniastoslup.cpp
 
-dron.o: interfejs_drona.hh prostopadloscian.hh dron.cpp dron.hh sruba.hh rysowanie_int.hh vector.hh m_obrotu.hh
+dron.o: interfejs_drona.hh prostopadloscian.hh przeszkoda.hh dron.cpp dron.hh sruba.hh rysowanie_int.hh vector.hh m_obrotu.hh
 	g++ ${CPPFLAGS} -o dron.o dron.cpp
 
 p_prost.o: przeszkoda.hh prostopadloscian.hh p_prost.cpp p_prost.hh interfejs_drona.hh vector.hh m_obrotu.hh
