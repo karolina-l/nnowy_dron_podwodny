@@ -144,18 +144,31 @@ int main()
 ///////koniec przygotowania danych////////
 
   Dron I(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y);
+  Dron I1(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y);
+  Dron I2(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y);
   Dno dno(wsk);
   Tafla tafla(wsk);
   Pprost prz1(wsk,sp1,mac1,tca1);
   Pprost prz2(wsk,sp2,mac2,tca2);
   char wybor='v';
 
-
   dno.rysuj_ksztalt();
   tafla.rysuj_ksztalt();
   prz1.rysuj_ksztalt();
   prz2.rysuj_ksztalt();
   I.rysuj_ksztalt();
+  I1.rysuj_ksztalt();
+  I2.rysuj_ksztalt();
+  TWektor<double,3> i1, i2;
+  double ti1[3]={-3.0, -3.0, -3.0};
+  double ti2[3]={3.0,3.0,3.0};
+  i1=ti1;
+  i2=ti2;
+
+
+  I1.zmien_polozenie(i1);
+  I2.zmien_polozenie(i2);
+
   wsk->redraw();
 
 ////////\menu/\\\\\\\\\
@@ -180,7 +193,21 @@ int main()
         double k;
         cout<<"Podaj kat obrotu: ";
         cin>>k;
-        I.zmien_kat(k);
+
+        double dzielnik=400;
+        double dod=k/dzielnik;
+        for(int i=1; i<=dzielnik; i++)
+        {
+          I.zmien_kat(dod);
+          if((prz1.czy_kolizja(I))||prz2.czy_kolizja(I))
+          {
+            dod=-dod;
+            I.zmien_kat(dod);
+            i=401;
+          }
+        }
+
+
         break;
       }
 
@@ -189,7 +216,21 @@ int main()
         TWektor<double,3> w;
         cout<<"Podaj wektor przesuniecia: ";
         cin>>w;
-        I.zmien_polozenie(w);
+        int dzielnik=600;
+        TWektor<double,3> dod;
+        dod=w/dzielnik;
+        for(int i=0; i<dzielnik; i++)
+        {
+            I.zmien_polozenie(dod);
+            if((tafla.czy_kolizja(I))||(dno.czy_kolizja(I))||(prz1.czy_kolizja(I))||prz2.czy_kolizja(I) || I1.czy_kolizja(I) || I2.czy_kolizja(I))
+            {
+              dod[0]=-dod[0];
+              dod[1]=-dod[1];
+              dod[2]=-dod[2];
+              I.zmien_polozenie(dod);
+              i=601;
+            }
+        }
         break;
       }
 

@@ -1,30 +1,5 @@
 #include "interfejs_drona.hh"
 
-//using namespace std;
-
-using std::vector;
-using drawNS::Point3D;
-using drawNS::APIGnuPlot3D;
-
-Interfejs::Interfejs()
-{
-  for(int i=0; i<3; i++)
-  {
-    srodek_int[i]=0;
-  }
-}
-
-Interfejs::Interfejs(const TWektor<double,3> &wekt)
-{
-  for(int i=0; i<3; i++)
-  {
-    srodek_int[i]=wekt[i];
-  }
-}
-TWektor<double,3> Interfejs::zwroc_interfejs()
-{
-  return this->srodek_int;
-}
 
 
 

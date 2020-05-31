@@ -50,3 +50,19 @@ void Tafla::rysuj_ksztalt()
 
       gnuplot->redraw();
 }
+
+bool Tafla::czy_kolizja(const Interfejs &i) const
+{
+  TWektor<double,3> sr_drona;
+  sr_drona=i.zwroc_interfejs();
+  if(sr_drona[2]>4.5)
+  {
+    cout<<"dron się wynużył"<<endl;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+
+}

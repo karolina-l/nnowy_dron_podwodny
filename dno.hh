@@ -3,6 +3,7 @@
 
 #include "powierzchnia.hh"
 #include "vector.hh"
+#include "przeszkoda.hh"
 
 using std::vector;
 using drawNS::Point3D;
@@ -11,7 +12,7 @@ using drawNS::APIGnuPlot3D;
 /*!
 * \brief Klasa Dno dziedziczaca publicznie po klasie Powierzchnia
 */
-class Dno: public Powierzchnia{
+class Dno: public Powierzchnia, public Przeszkoda{
 /*!
 * \brief indeks rysowanego dna
 */
@@ -32,6 +33,11 @@ public:
   * \brief Dziedziczona metoda sluzaca do rysowania obiektow
   */
   void rysuj_ksztalt() override;
+  /*!
+  * \brief Metoda wykrywajaca kolizje drona z dnem
+  * \param1 Interfejs i - obiekt klasy Interfejs
+  */
+  bool czy_kolizja(const Interfejs &i) const override;
 
 };
 

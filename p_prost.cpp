@@ -1,7 +1,7 @@
 #include "p_prost.hh"
 #include <cmath>
 
-bool Pprost::czy_kolizja(Interfejs i)
+bool Pprost::czy_kolizja(const Interfejs &i) const
 {
   TWektor<double,3> dronsr, przesr;
   przesr=this->srodek;
@@ -14,8 +14,12 @@ bool Pprost::czy_kolizja(Interfejs i)
   dz=abs(przesr[2]-przesr[2]);
   odl=dx*dx+dy*dy+dz*dz;
   odl=sqrt(odl);
-  if(odl<(Ri+Rp))
+  if(odl<(Ri+Rp+0.6))
+  {
+    cout<<"kolizja z pudelkiem"<<endl;
     return true;
+  }
+
   else
     return false;
 }

@@ -8,6 +8,7 @@
 #include "sruba.hh"
 #include "vector.hh"
 #include "m_obrotu.hh"
+#include "przeszkoda.hh"
 
 using std::vector;
 using drawNS::Point3D;
@@ -16,7 +17,7 @@ using drawNS::APIGnuPlot3D;
 /*!
 * \brief Klasa Dron dziedziczaca publicznie po klasie Interfejs
 */
-class Dron: public Interfejs, public Prostopadloscian{
+class Dron: public Interfejs, public Prostopadloscian, public Przeszkoda{
 
   /*!
   * \brief pole reprezentujace wirnik drona
@@ -40,7 +41,7 @@ public:
   * \param8 TMacierzKw<double,3> mat - macierz m_obrotu
   * Metoda korzysta z konstruktora klasy Interfejs
   */
-  Dron(drawNS::APIGnuPlot3D*plot, const TWektor<double,3> &sr1, const TWektor<double,3> &sr2, const TWektor<double,3> &srdr, TWektor<double,3> *ws1, TWektor<double,3> *ws2, TWektor<double,3> *wd, const TMacierzKw<double,3> &mat):Interfejs(srdr), Prostopadloscian(plot,srdr,mat,wd), s1(plot, sr1, mat, ws1, srdr), s2(plot, sr2, mat, ws2, srdr){}
+  Dron(drawNS::APIGnuPlot3D*plot, const TWektor<double,3> &sr1, const TWektor<double,3> &sr2, const TWektor<double,3> &srdr, TWektor<double,3> *ws1, TWektor<double,3> *ws2, TWektor<double,3> *wd, const TMacierzKw<double,3> &mat):Prostopadloscian(plot,srdr,mat,wd), s1(plot, sr1, mat, ws1, srdr), s2(plot, sr2, mat, ws2, srdr){}
   /*!
   * \brief wirtualny destruktor klasy DRON*/
   virtual ~Dron(){}
@@ -58,7 +59,18 @@ public:
   * \param1 TWektor<double,3> w - wektor zmiany polozenia
   */
   void zmien_polozenie(const TWektor<double,3> &w) override;
-
+  /*!
+  * \brief Metoda wykrywajaca kolizje drona z dronem
+  * \param1 Interfejs i - obiekt klasy Interfejs
+  */
+  bool czy_kolizja(const Interfejs &i) const;
+  /*!
+  * \brief Metoda zwracajaca srodek drona
+  */
+  TWektor<double,3> zwroc_interfejs() const override
+  {
+    return srodek;
+  }
 };
 
 

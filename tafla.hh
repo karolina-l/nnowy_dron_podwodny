@@ -3,14 +3,15 @@
 
 #include "powierzchnia.hh"
 #include "vector.hh"
+#include "przeszkoda.hh"
 
 using std::vector;
 using drawNS::Point3D;
 using drawNS::APIGnuPlot3D;
 /*!
-* \brief Klasa Tafla dziedziczaca publicznie po klasie Powierzchnia
+* \brief Klasa Tafla dziedziczaca publicznie po klasie Powierzchnia i Przeszkoda
 */
-class Tafla: public Powierzchnia{
+class Tafla: public Powierzchnia, public Przeszkoda{
 /*!
 * \brief indeks rysowanego dna
 */
@@ -31,6 +32,11 @@ public:
   * \brief Dziedziczona metoda sluzaca do rysowania obiektow
   */
   void rysuj_ksztalt() override;
+  /*!
+  * \brief Metoda wykrywajaca kolizje drona z tafla wody
+  * \param1 Interfejs i - obiekt klasy Interfejs
+  */
+  bool czy_kolizja(const Interfejs &i)const ;
 
 };
 
