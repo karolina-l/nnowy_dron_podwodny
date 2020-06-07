@@ -1,8 +1,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "dron.hh"
-//#include "prostopadloscian.hh"
-//#include "sruba.hh"
+#include "vector.hh"
 #include "dno.hh"
 #include "tafla.hh"
 #include "templates.cpp"
@@ -16,6 +15,52 @@ void wait4key() {
   do {
     cout << "\n Press a key to continue..." << endl;
   } while(cin.get() != 'a');
+}
+
+void obrot(double k, const shared_ptr <Dron> &I, vector <shared_ptr<Przeszkoda> >t_p )
+{
+  double dzielnik=400;
+  double dod=k/dzielnik;
+  for(int i=1; i<=dzielnik; i++)
+  {
+    I->zmien_kat(dod);
+
+    for (int j=0; j<t_p.size(); j++)
+    {
+      if(t_p[j]->czy_kolizja(*I))
+        {
+          dod=-dod;
+          I->zmien_kat(dod);
+          j=t_p.size();
+          i=401;
+        }
+    }
+
+  }
+}
+
+void plyn(TWektor<double,3> w, shared_ptr <Dron> I, vector <shared_ptr<Przeszkoda> >t_p)
+{
+  int dzielnik=600;
+  TWektor<double,3> dod;
+  dod=w/dzielnik;
+  for(int i=0; i<dzielnik; i++)
+  {
+      I->zmien_polozenie(dod);
+
+      for( int j=0; j<t_p.size(); j++)
+      {
+        if(t_p[j]->czy_kolizja(*I))
+        {
+          dod[0]=-dod[0];
+          dod[1]=-dod[1];
+          dod[2]=-dod[2];
+          I->zmien_polozenie(dod);
+          i=601;
+        }
+      }
+
+  }
 }
 
 /*void wczytaj(int w_tab, string nazwa, TWektor<double,3> *tab, TMacierzKw<double,3> *x, TWektor<double,3> *sdk)
@@ -143,22 +188,47 @@ int main()
     p2.close();
 ///////koniec przygotowania danych////////
 
-  Dron I(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y);
-  Dron I1(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y);
-  Dron I2(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y);
-  Dno dno(wsk);
-  Tafla tafla(wsk);
-  Pprost prz1(wsk,sp1,mac1,tca1);
-  Pprost prz2(wsk,sp2,mac2,tca2);
+std::vector<std::shared_ptr<Dron>> t_dronow
+    {
+        std::make_shared<Dron>(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y),
+        std::make_shared<Dron>(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y),
+        std::make_shared<Dron>(wsk, sdk, sdk1, sdk2, tab, tab1, tab2, y)
+    };
+
+std::vector<std::shared_ptr<Pprost>> t_przeszkod
+    {
+        std::make_shared<Pprost>(wsk,sp1,mac1,tca1),
+        std::make_shared<Pprost>(wsk,sp2,mac2,tca2)
+    };
+
+std::vector<std::shared_ptr<Przeszkoda>> t_p;
+
+std::shared_ptr<Dno> dn = std::make_shared<Dno>(wsk);
+std::shared_ptr<Tafla> tf=std::make_shared<Tafla>(wsk);
+
+t_p.push_back(dn);
+t_p.push_back(tf);
+    for(int i=0; i<3; i++)
+    {
+      t_p.push_back(t_dronow[i]);
+    }
+    for (int i=0; i<2; i++)
+    {
+      t_p.push_back(t_przeszkod[i]);
+    }
+
   char wybor='v';
 
-  dno.rysuj_ksztalt();
-  tafla.rysuj_ksztalt();
-  prz1.rysuj_ksztalt();
-  prz2.rysuj_ksztalt();
-  I.rysuj_ksztalt();
-  I1.rysuj_ksztalt();
-  I2.rysuj_ksztalt();
+  t_dronow[0]->zmien_kolor("blue");
+  t_dronow[1]->zmien_kolor("black");
+  t_dronow[2]->zmien_kolor("green");
+  dn->rysuj_ksztalt();
+  tf->rysuj_ksztalt();
+  t_przeszkod[0]->rysuj_ksztalt();
+  t_przeszkod[1]->rysuj_ksztalt();
+  t_dronow[0]->rysuj_ksztalt();
+  t_dronow[1]->rysuj_ksztalt();
+  t_dronow[2]->rysuj_ksztalt();
   TWektor<double,3> i1, i2;
   double ti1[3]={-3.0, -3.0, -3.0};
   double ti2[3]={3.0,3.0,3.0};
@@ -166,20 +236,26 @@ int main()
   i2=ti2;
 
 
-  I1.zmien_polozenie(i1);
-  I2.zmien_polozenie(i2);
+  t_dronow[1]->zmien_polozenie(i1);
+  t_dronow[2]->zmien_polozenie(i2);
 
   wsk->redraw();
 
 ////////\menu/\\\\\\\\\
 
+  int wyb_drona=0;
   while(wybor!='q')
   {
+
+      cout<<"Aktualna ilosc wektorow: "<<TWektor<double,3>::wez_ile_aktualnie()<<endl;
+      cout<<"Calkowita ilosc wektorow: "<<TWektor<double,3>::wez_ile_wszystkich()<<endl;
+      cout<<"Aktualna ilosc elementow: "<<Bryla::wez_ob_aktualnie()<<endl;
+      cout<<"Calkowita ilosc elementow: "<<Bryla::wez_ob_wszystkie()<<endl;
 
       cout<<"wybierz opcję:"<<endl<<endl;
       cout<<"o - obroc dron"<<endl;
       cout<<"p - przesun dron"<<endl;
-      cout<<"r - rysuj dron"<<endl;
+      cout<<"z - zmien dron"<<endl;
       cout<<"q - wyjscie z programu"<<endl;
 
 
@@ -194,20 +270,7 @@ int main()
         cout<<"Podaj kat obrotu: ";
         cin>>k;
 
-        double dzielnik=400;
-        double dod=k/dzielnik;
-        for(int i=1; i<=dzielnik; i++)
-        {
-          I.zmien_kat(dod);
-          if((prz1.czy_kolizja(I))||prz2.czy_kolizja(I))
-          {
-            dod=-dod;
-            I.zmien_kat(dod);
-            i=401;
-          }
-        }
-
-
+        obrot(k,t_dronow[wyb_drona],t_p);
         break;
       }
 
@@ -216,21 +279,7 @@ int main()
         TWektor<double,3> w;
         cout<<"Podaj wektor przesuniecia: ";
         cin>>w;
-        int dzielnik=600;
-        TWektor<double,3> dod;
-        dod=w/dzielnik;
-        for(int i=0; i<dzielnik; i++)
-        {
-            I.zmien_polozenie(dod);
-            if((tafla.czy_kolizja(I))||(dno.czy_kolizja(I))||(prz1.czy_kolizja(I))||prz2.czy_kolizja(I) || I1.czy_kolizja(I) || I2.czy_kolizja(I))
-            {
-              dod[0]=-dod[0];
-              dod[1]=-dod[1];
-              dod[2]=-dod[2];
-              I.zmien_polozenie(dod);
-              i=601;
-            }
-        }
+        plyn(w,t_dronow[wyb_drona],t_p);
         break;
       }
 
@@ -239,10 +288,20 @@ int main()
         exit(0);
         break;
 
-      case 'r':
-        I.rysuj_ksztalt();
-        wsk->redraw();
+      case 'z':
+      {
+        string kolorek;
+        cout<<"Podaj kolor drona, ktorym chcesz sterowac: (green, blue, black)"<<endl;
+        cin>>kolorek;
+        if(kolorek=="blue")
+        wyb_drona=0;
+        if(kolorek=="green")
+        wyb_drona=2;
+        if(kolorek=="black")
+        wyb_drona=1;
         break;
+      }
+
 
 
 

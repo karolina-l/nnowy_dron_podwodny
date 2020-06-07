@@ -18,6 +18,8 @@ class TWektor{
   * \brief wektor zadabego typu i rozmiaru
   */
   TYP Twek[ROZM];
+  static int ile_aktualnie;
+  static int ile_wszystkich;
 public:
   /*!
   * \brief Konstruktor klasy TWektor
@@ -27,7 +29,9 @@ public:
   * \brief Konstruktor klasy TWektor
   * \param1 TYP tab[ROZM] - tablica danych zadanego typu i rozmiaru
   */
+  //~TWektor(){ile_wszystkich--;} //program nie dziala po odkomentowaniu
   TWektor(TYP tab[ROZM]);
+  TWektor(const TWektor &nowy);
   /*!
   * \brief Przeciazenie operatora []
   * \param1 int index - indeks danego skladnika
@@ -45,6 +49,9 @@ public:
   * \param1 TWektor W- wektor zadanego typu i rozmiaru
   * \return zwraca nowy wektor
   */
+
+  static int wez_ile_aktualnie() {return ile_aktualnie;}
+  static int wez_ile_wszystkich() {return ile_wszystkich;}
   TWektor operator + (const TWektor & W) const;
   /*!
   * \brief Przeciazenie operatora +=

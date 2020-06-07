@@ -37,7 +37,7 @@ public:
   * \param1 Interfejs i - obiekt klasy Interfejs
   */
   bool czy_kolizja(const Interfejs &i)const ;
-
+  
 };
 
 #endif

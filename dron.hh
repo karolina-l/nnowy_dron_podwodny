@@ -45,6 +45,7 @@ public:
   /*!
   * \brief wirtualny destruktor klasy DRON*/
   virtual ~Dron(){}
+  void zmien_kolor(string klr) override;
   /*!
   * \brief metoda sluzaca do rysowania obiektow
   */

@@ -50,7 +50,7 @@ public:
   * \param1 TWektor<double,3> w - wektor zmiany polozenia
   */
   void zmien_polozenie(const TWektor<double,3> &w) override;
-
+  void zmien_kolor(string klr) override;
 };
 
 

@@ -4,6 +4,11 @@
 
 using namespace std;
 
+void Graniastoslup::zmien_kolor(string klr)
+{
+  this->kolor=klr;
+}
+
   Graniastoslup::Graniastoslup(drawNS::APIGnuPlot3D*plot, const TWektor<double,3> &sr, const TMacierzKw<double,3> &mat, TWektor<double,3>*w): Bryla(plot, sr, mat)
   {
     for(int i=0; i<12; i++)
@@ -18,7 +23,7 @@ using namespace std;
     {
       {t[0],t[1],t[2],t[3],t[4],t[5]},
       {t[6],t[7],t[8],t[9],t[10],t[11]}
-    },"red");
+    },this->kolor);
   //  gnuplot->redraw();
   }
 

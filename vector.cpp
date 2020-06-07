@@ -1,6 +1,13 @@
 #include "vector.hh"
 #include <cmath>
 
+
+template <typename TYP, int ROZM>
+int TWektor<TYP,ROZM>::ile_aktualnie=0;
+
+template <typename TYP, int ROZM>
+int TWektor<TYP,ROZM>::ile_wszystkich=0;
+
 template <typename TYP, int ROZM>
 TWektor<TYP,ROZM>::TWektor()
 {
@@ -8,6 +15,8 @@ TWektor<TYP,ROZM>::TWektor()
   {
     Twek[i]=0.0;
   }
+  ile_aktualnie++;
+  ile_wszystkich++;
 }
 
 template <typename TYP, int ROZM>
@@ -17,14 +26,23 @@ TWektor<TYP,ROZM>::TWektor(TYP tab[ROZM])
   {
     Twek[i]=tab[i];
   }
+  ile_aktualnie++;
+  ile_wszystkich++;
+}
+template <typename TYP, int ROZM>
+TWektor<TYP,ROZM>::TWektor(const TWektor &nowy)
+{
+  *this=nowy;
+  ile_aktualnie++;
+  ile_wszystkich++;
 }
 
 template <typename TYP, int ROZM>
 const TYP & TWektor<TYP,ROZM>::operator[] (int index) const
 {
-  if (index < 0 || index > ROZMIAR)
+  if (index < 0 || index >= ROZMIAR)
   {
-    cerr << "indeks poza zakresem" << endl;
+    cerr << "pindeks poza zakresem" << endl;
     exit(1);
   }
   else
@@ -36,9 +54,9 @@ const TYP & TWektor<TYP,ROZM>::operator[] (int index) const
 template <typename TYP, int ROZM>
 TYP & TWektor<TYP,ROZM>::operator[] (int index)
 {
-   if (index < 0 || index > ROZMIAR)
+   if (index < 0 || index >= ROZMIAR)
    {
-     cerr << "indeks poza zakresem" << endl;
+     cerr << "qindeks poza zakresem" << endl;
      exit(1);
    }
    else

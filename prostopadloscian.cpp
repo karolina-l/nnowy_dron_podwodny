@@ -3,6 +3,12 @@
 #include <math.h>
 
 using namespace std;
+
+void Prostopadloscian::zmien_kolor(string klr)
+{
+  this->kolor=klr;
+}
+
   Prostopadloscian::Prostopadloscian(drawNS::APIGnuPlot3D*plot, const TWektor<double,3> &sr, const TMacierzKw<double,3> &mat, TWektor<double,3>*w): Bryla(plot, sr, mat)
   {
     for(int i=0; i<8; i++)

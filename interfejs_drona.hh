@@ -10,11 +10,12 @@ using drawNS::Point3D;
 using drawNS::APIGnuPlot3D;
 
 /*!
-* \brief Klasa Interfejs 
+* \brief Klasa Interfejs
 */
 class Interfejs{
 
 public:
+
   /*!
   * \brief wirtualny destruktor klasy Interfejs
   */
